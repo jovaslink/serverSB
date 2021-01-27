@@ -8,6 +8,15 @@ const stripe = new Stripe("sk_test_L2cKpgElHowzUqPmZ4Ugw5ab00hQWgFuX2");
 app.use(cors({ origin: "http://localhost:3000" }));
 app.use(express.json());
 
+//Cancelar suscripcion
+app.post("/api/cancel-subscription", async (req, res) => {
+  // Delete the subscription
+  const deletedSubscription = await stripe.subscriptions.del(
+    req.body.subscriptionId
+  );
+  res.send(deletedSubscription);
+});
+
 //Recuperamos el metodo de pago, para mostrar la terminacion de la tarjeta
 app.post("/api/retrieve-customer-payment-method", async (req, res) => {
   const paymentMethod = await stripe.paymentMethods.retrieve(
